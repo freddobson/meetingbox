@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+
+        mysql:
+                build: ./mysql
+                ports:
+                        - 3306:3306
+                volumes:
+                        - /var/lib/mysql
+                networks:
+                        - data
+
+        flask:
+                build: ./flask
+                ports:
+                        - 9090:9090
+                volumes:
+                        - /static
+                networks:
+                        - data
+                        - front
+                depends_on:
+                        - mysql
+        
+        nginx:
+                build: ./nginx
+                ports:
+                        - 80:80
+                        - 443:443
+                volumes:
+                        - /etc/nginx
+                depends_on:
+                        - flask
+
+
