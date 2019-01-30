@@ -1,8 +1,7 @@
 FROM python:3
-WORKDIR /usr/src/app
-COPY requirements.txt ./
-COPY . ./meetingbox
-RUN pip install -r ./meetingbox/requirements.txt
-EXPOSE 80
-CMD ["uwsgi", "-s", "/tmp/meetingbox.sock", "--manage-script-name", "--mount", "/meetingbox=myapp:app"]
-
+WORKDIR /usr/src/app/meetingbox
+COPY . .
+RUN pip install -r ./requirements.txt
+EXPOSE 9090
+CMD ["uwsgi", "--socket", "0.0.0.0:9090", "--wsgi-file", "app.py", "--callable", "app"]
+	
