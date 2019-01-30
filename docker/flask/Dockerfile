@@ -1,11 +1,8 @@
-FROM python:latest
-# COPY ./requirements.txt .
-# COPY ./templates/ /templates
-# COPY ./static /static
-COPY ./app.py .
-RUN pip install flask
-RUN pip install flask-bootstrap
-CMD [ "python", "./app.py" ]
-
-
+FROM python:3
+WORKDIR /usr/src/app
+COPY requirements.txt ./
+COPY . ./meetingbox
+RUN pip install -r ./meetingbox/requirements.txt
+EXPOSE 80
+CMD ["uwsgi", "-s", "/tmp/meetingbox.sock", "--manage-script-name", "--mount", "/meetingbox=myapp:app"]
 

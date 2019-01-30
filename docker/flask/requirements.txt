@@ -1,0 +1,7 @@
+flask
+flask-bootstrap
+mysqlclient==1.3.12
+flask-mysqldb
+pyyaml
+uwsgi
+
