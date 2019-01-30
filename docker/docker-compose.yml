@@ -7,7 +7,7 @@ services:
                 ports:
                         - 3306:3306
                 volumes:
-                        - /var/lib/mysql
+                        - database-location:/var/lib/mysql
                 networks:
                         - data
 
@@ -16,7 +16,7 @@ services:
                 ports:
                         - 9090:9090
                 volumes:
-                        - /static
+                        - static-content:/static
                 networks:
                         - data
                         - front
@@ -29,8 +29,34 @@ services:
                         - 80:80
                         - 443:443
                 volumes:
-                        - /etc/nginx
+                        - nginx-conf:/etc/nginx
+                        - ssl-certificates:/etc/nginx/ssl
+                        - static-content:/sites/club/static  
+                networks:
+                        - front
                 depends_on:
                         - flask
+        cron:
+                build: ./cron
+                volumes:
+                        - ssl-certificates:/ssl-certificates
+                networks:
+                        - private
+                depends_on:
+                        - nginx
+
+volumes:
+        nginx-conf:
+        ssl-certificates:
+        static-content:        
+        database-location:
+networks:
+        front:
+                driver: bridge
+        data:
+                driver: bridge
+        private:
+                driver: none
+
 
 
