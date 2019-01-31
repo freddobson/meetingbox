@@ -4,8 +4,7 @@ app = Flask(__name__)
 Bootstrap(app)
 @app.route('/')
 def index():
-	return "hello world"
-    # return render_template('index.html')
+    return render_template('index.html')
 
 @app.route('/meeting-schedule')
 def meeting_schedule():
